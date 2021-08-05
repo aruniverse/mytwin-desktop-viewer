@@ -3,6 +3,7 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 
+import { ElectronHost } from "@bentley/electron-manager/lib/ElectronBackend";
 import { IpcHandler } from "@bentley/imodeljs-backend";
 import { dialog } from "electron";
 import * as minimist from "minimist";
@@ -23,7 +24,8 @@ class ViewerHandler extends IpcHandler implements ViewerIpc {
     return {
       snapshotName: parsedArgs._[0] ?? getAppEnvVar("SNAPSHOT"),
       clientId: getAppEnvVar("CLIENT_ID") ?? "",
-      redirectUri: getAppEnvVar("REDIRECT_URI") ?? "",
+      redirectUri: getAppEnvVar("REDIRECT_URI"),
+      issuerUrl: getAppEnvVar("ISSUER_URL"),
     };
   }
   /**
@@ -33,6 +35,11 @@ class ViewerHandler extends IpcHandler implements ViewerIpc {
    */
   public async openFile(options: any): Promise<Electron.OpenDialogReturnValue> {
     return dialog.showOpenDialog(options);
+  }
+
+  public async getTokenString(): Promise<string> {
+    const token = await ElectronHost.authorization.getAccessToken();
+    return token.toTokenString();
   }
 }
 

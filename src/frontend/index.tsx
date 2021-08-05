@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import { AppLoggerCategory } from "../common/LoggerCategory";
 import store from "./app/store";
 import { AppComponent } from "./components/AppComponent";
+import { ITwinViewerApp } from "./app/ITwinViewerApp";
 
 const viewerFrontendMain = async () => {
   // Setup logging immediately to pick up any logging during App.startup()
@@ -30,3 +31,8 @@ const viewerFrontendMain = async () => {
 };
 
 viewerFrontendMain(); // eslint-disable-line @typescript-eslint/no-floating-promises
+
+// for quick debugging
+if (window) {
+  (window as any).ITwinViewerApp = ITwinViewerApp;
+}

@@ -32,6 +32,7 @@ import {
 import { IModelSelectFrontstage } from "./frontstages/IModelSelectFrontstage";
 import { SignInFrontstage } from "./frontstages/SignInFrontstage";
 import { SnapshotSelectFrontstage } from "./frontstages/SnapshotSelectFrontstage";
+import { UserInfoProvider } from "../uiProviders/UserInfoProvider";
 
 type LocalStoreName = "snapshot" | "imodel" | "project";
 const makeLocalStoreName = (name: LocalStoreName) => `DesktopViewer:${name}`;
@@ -192,7 +193,7 @@ export const AppComponent = () => {
    * stored in the iModel. Delete this function and the prop that it is passed to if you prefer
    * to honor default views when they are present instead (the Viewer will still apply a similar function to iModels that do not have a default view).
    */
-  const viewConfiguration = (viewPort: ScreenViewport) => {
+  const viewportConfigurer = (viewPort: ScreenViewport) => {
     const tileTreesLoaded = () => {
       return new Promise((resolve, reject) => {
         const start = new Date();
@@ -224,7 +225,8 @@ export const AppComponent = () => {
       onIModelAppInit={onIModelAppInitialized}
       frontstages={frontstages}
       backstageItems={backstageItems}
-      viewCreatorOptions={{ viewportConfigurer: viewConfiguration }}
+      viewCreatorOptions={{ viewportConfigurer }}
+      uiProviders={[new UserInfoProvider()]}
     />
   );
 };

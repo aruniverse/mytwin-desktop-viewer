@@ -17,12 +17,14 @@ export const channelName = iTwinChannel("desktop-viewer");
 export interface ViewerIpc {
   getConfig: () => Promise<ViewerConfig>;
   openFile: (options: any) => Promise<OpenDialogReturnValue>;
+  getTokenString: () => Promise<string>;
 }
 
 export interface ViewerConfig {
   snapshotName?: string;
   clientId: string;
-  redirectUri: string;
+  redirectUri?: string;
+  issuerUrl?: string;
 }
 
 /** RPC interfaces required by the viewer */
